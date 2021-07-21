@@ -44,7 +44,7 @@ class MainBoard {
 
         this._container.scale.set(this._scale);
 
-        this._table.update(deltaTime);
+        this._table.update();
 
         this._children.forEach((child) => {
             child.update(deltaTime, this._table);

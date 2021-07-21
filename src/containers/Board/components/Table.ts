@@ -6,7 +6,7 @@ class Table extends BoardPart {
         super(textureName, anchorPoint, renderer);
     }
 
-    update(deltaTime: number, relativePart: any = null): void {
+    update(): void {
         //super.update();
         this._sprite.x = 0;
         this._sprite.y = this._renderer.screen.height;
