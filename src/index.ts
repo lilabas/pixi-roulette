@@ -4,6 +4,7 @@ import Background from "./components/Background/index";
 import { GAME_HEIGHT, GAME_WIDTH } from "./constants/config";
 import MainBoard from "./components/Board/MainBoard";
 import Table from "./components/Board/Table";
+import Wheel from "./components/Board/Wheel";
 
 declare const VERSION: string;
 
@@ -25,6 +26,7 @@ const renderer = app.renderer;
 let background: Background;
 let mainBoard: MainBoard;
 let table: Table;
+let wheel: Wheel;
 
 window.onload = async (): Promise<void> => {
     await loadGameAssets();
@@ -35,7 +37,9 @@ window.onload = async (): Promise<void> => {
 
     //start main game loop
     const ticker = new PIXI.Ticker();
-    ticker.add(update);
+    ticker.add((deltaTime) => {
+        update(deltaTime);
+    });
     ticker.start();
 };
 
@@ -43,19 +47,20 @@ function initComponents(): void {
     background = new Background(renderer);
     stage.addChild(background.Sprite);
 
-    mainBoard = new MainBoard(renderer, 0.7);
-
     table = new Table("board/board-sm.png", new PIXI.Point(0, 1), renderer);
+    wheel = new Wheel("board/wheel-sm.png", new PIXI.Point(0.5, 0.5), renderer);
 
-    mainBoard.addComponent(table);
+    mainBoard = new MainBoard(renderer, 0.7, table);
+
+    mainBoard.addComponent(wheel);
 
     stage.addChild(mainBoard.Container);
 }
 
 // main game loop
-function update() {
+function update(deltaTime: number) {
     background.update();
-    mainBoard.update();
+    mainBoard.update(deltaTime);
 }
 
 async function loadGameAssets(): Promise<void> {

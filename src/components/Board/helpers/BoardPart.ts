@@ -25,7 +25,9 @@ class BoardPart {
         return this._sprite;
     }
 
-    update(): void {
+    update(deltaTime: number, anotherPart: any = null): void {
+        if (!anotherPart) return;
+        //console.log("🚀 ~ file: BoardPart.ts ~ line 29 ~ BoardPart ~ update ~ anotherPart", anotherPart);
         //console.log("board part update");
     }
 }
