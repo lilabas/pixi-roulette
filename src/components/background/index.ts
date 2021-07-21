@@ -1,5 +1,4 @@
 import * as PIXI from "pixi.js";
-//import { GAME_HEIGHT, GAME_WIDTH } from "../../constants/config";
 
 class Background {
     _renderer: PIXI.AbstractRenderer;
@@ -16,14 +15,17 @@ class Background {
         return sprite;
     }
 
-    public get Sprite(): PIXI.Sprite {
+    get Sprite(): PIXI.Sprite {
         return this._sprite;
     }
 
     update(): void {
         this._sprite.x = this._renderer.screen.width / 2;
         this._sprite.y = this._renderer.screen.height / 2;
-        this._sprite.scale.set(this._renderer.screen.width / 320, this._renderer.screen.height / 240);
+        this._sprite.scale.set(
+            this._renderer.screen.width / this._sprite.texture.width,
+            this._renderer.screen.height / this._sprite.texture.height
+        );
     }
 }
 

@@ -1,7 +1,9 @@
 import * as PIXI from "pixi.js";
 import "./style.css";
-import Background from "./components/background/index";
+import Background from "./components/Background/index";
 import { GAME_HEIGHT, GAME_WIDTH } from "./constants/config";
+import MainBoard from "./components/Board/MainBoard";
+import Table from "./components/Board/Table";
 
 declare const VERSION: string;
 
@@ -21,41 +23,46 @@ const renderer = app.renderer;
 
 // game elements
 let background: Background;
+let mainBoard: MainBoard;
+let table: Table;
 
 window.onload = async (): Promise<void> => {
     await loadGameAssets();
 
     document.body.appendChild(app.view);
 
-    //resizeCanvas();
+    initComponents();
 
-    background = new Background(renderer);
-    //backgroundSprite.scale.set();
-
-    //backgroundSprite.anchor.set(0.5, 0.5);
-
-    stage.addChild(background.Sprite);
-    // const birdFromSprite = getBird();
-    // birdFromSprite.anchor.set(0.5, 0.5);
-    // birdFromSprite.position.set(gameWidth / 2, gameHeight / 2);
-
-    // stage.addChild(birdFromSprite);
-
+    //start main game loop
     const ticker = new PIXI.Ticker();
     ticker.add(update);
     ticker.start();
 };
 
+function initComponents(): void {
+    background = new Background(renderer);
+    stage.addChild(background.Sprite);
+
+    mainBoard = new MainBoard(renderer, 0.7);
+
+    table = new Table("board/board-sm.png", new PIXI.Point(0, 1), renderer);
+
+    mainBoard.addComponent(table);
+
+    stage.addChild(mainBoard.Container);
+}
+
 // main game loop
 function update() {
     background.update();
+    mainBoard.update();
 }
 
 async function loadGameAssets(): Promise<void> {
     return new Promise((res, rej) => {
         const loader = PIXI.Loader.shared;
-        loader.add("rabbit", "./assets/simpleSpriteSheet.json");
-        loader.add("background", "./assets/background/sky.png");
+        loader.add("background", "./assets/background/background.jpg");
+        loader.add("components", "./assets/components.json");
 
         loader.onComplete.once(() => {
             res();
