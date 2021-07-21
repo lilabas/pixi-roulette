@@ -57,6 +57,7 @@ function initComponents(): void {
     mainBoard.addComponent(wheel);
 
     stage.addChild(mainBoard.Container);
+    stage.addChild(mainBoard.PlacedChipsContainer);
 }
 
 // main game loop
