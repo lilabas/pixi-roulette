@@ -2,9 +2,13 @@ import * as PIXI from "pixi.js";
 import Table from "../../components/Table";
 import BoardPart from "../../components/BoardPart";
 
+interface IClick {
+    (name: string, sprite: PIXI.Sprite): void;
+}
 class Hitbox extends BoardPart {
     _offset: PIXI.Point;
     _name: string;
+    _onClick: IClick;
 
     constructor(
         textureName: string,
@@ -16,6 +20,7 @@ class Hitbox extends BoardPart {
         super(textureName, anchorPoint, renderer);
         this._offset = offset;
         this._name = name;
+        this._onClick = () => null;
         this.init();
     }
 
@@ -39,9 +44,13 @@ class Hitbox extends BoardPart {
         this._sprite.y = tableRect.y + tableRect.height * 0.43 - offsetY;
     }
 
+    onClicked(callback: IClick): void {
+        this._onClick = callback;
+    }
+
     private handleOnPointerDown(): void {
         this._sprite.filters = [new PIXI.filters.AlphaFilter(0.0)];
-        console.log("pointerdown", this._name);
+        this._onClick(this._name, this._sprite);
     }
     private handleOnPointerOver(): void {
         this._sprite.filters = [new PIXI.filters.AlphaFilter(0.5)];

@@ -6,6 +6,8 @@ import Hitbox from "../helpers/hitboxes/Hitbox";
 import HitboxBig3 from "../helpers/hitboxes/HitboxBig3";
 import HitboxBottom6 from "../helpers/hitboxes/HitboxBottom6";
 import HitboxZero from "../helpers/hitboxes/HitboxZero";
+import GameState from "../../../Logic/GameState";
+import Chip from "./Chip";
 
 class MainBoard {
     _renderer: PIXI.AbstractRenderer;
@@ -53,6 +55,16 @@ class MainBoard {
         this._boardInteract.update(deltaTime);
     }
 
+    private handleBoardClick = (name: string, sprite: PIXI.Sprite): void => {
+        const chip = new Chip(
+            `chips/chip${GameState.selectedChip.color}.png`,
+            new PIXI.Point(0.5, 0.5),
+            this._renderer,
+            new PIXI.Point(sprite.position.x, sprite.position.y)
+        );
+        this.addComponent(chip);
+    };
+
     private buildHitboxes(): void {
         let num = 1;
 
@@ -66,6 +78,7 @@ class MainBoard {
                     new PIXI.Point(cols, rows),
                     `hitbox-${num}`
                 );
+                hitbox.onClicked(this.handleBoardClick);
                 this.addComponent(hitbox);
                 num++;
             }
@@ -81,6 +94,7 @@ class MainBoard {
                 new PIXI.Point(cols, 0),
                 `hitboxBig3-${num}`
             );
+            hitboxBig3.onClicked(this.handleBoardClick);
             this.addComponent(hitboxBig3);
             num++;
         }
@@ -95,6 +109,7 @@ class MainBoard {
                 new PIXI.Point(cols, 0),
                 `HitboxBottom6-${num}`
             );
+            hitboxBottom6.onClicked(this.handleBoardClick);
             this.addComponent(hitboxBottom6);
             num++;
         }
@@ -107,6 +122,7 @@ class MainBoard {
             new PIXI.Point(0, 0),
             `HitboxZero`
         );
+        hitboxZero.onClicked(this.handleBoardClick);
         this.addComponent(hitboxZero);
     }
 }
