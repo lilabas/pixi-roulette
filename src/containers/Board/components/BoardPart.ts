@@ -26,7 +26,7 @@ class BoardPart {
     }
 
     update(deltaTime: number, anotherPart: any = null): void {
-        if (!anotherPart) return;
+        //if (!anotherPart) return;
         //console.log("🚀 ~ file: BoardPart.ts ~ line 29 ~ BoardPart ~ update ~ anotherPart", anotherPart);
         //console.log("board part update");
     }

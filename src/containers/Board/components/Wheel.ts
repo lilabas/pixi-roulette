@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js";
-import BoardPart from "./helpers/BoardPart";
+import BoardPart from "./BoardPart";
 import Table from "./Table";
 
 class Wheel extends BoardPart {

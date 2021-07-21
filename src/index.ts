@@ -1,14 +1,16 @@
 import * as PIXI from "pixi.js";
 import "./style.css";
-import Background from "./components/Background/index";
+import Background from "./containers/Background/index";
 import { GAME_HEIGHT, GAME_WIDTH } from "./constants/config";
-import MainBoard from "./components/Board/MainBoard";
-import Table from "./components/Board/Table";
-import Wheel from "./components/Board/Wheel";
+import MainBoard from "./containers/Board/components/MainBoard";
+import Table from "./containers/Board/components/Table";
+import Wheel from "./containers/Board/components/Wheel";
 
 declare const VERSION: string;
 
 console.log(`Welcome from pixi-typescript-boilerplate ${VERSION}`);
+
+const COMPONETS_SCALE = 0.7;
 
 const app = new PIXI.Application({
     backgroundColor: 0xd3d3d3,
@@ -50,7 +52,7 @@ function initComponents(): void {
     table = new Table("board/board-sm.png", new PIXI.Point(0, 1), renderer);
     wheel = new Wheel("board/wheel-sm.png", new PIXI.Point(0.5, 0.5), renderer);
 
-    mainBoard = new MainBoard(renderer, 0.7, table);
+    mainBoard = new MainBoard(renderer, COMPONETS_SCALE, table);
 
     mainBoard.addComponent(wheel);
 

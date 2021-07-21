@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js";
-import BoardPart from "./helpers/BoardPart";
+import BoardPart from "./BoardPart";
 
 class Table extends BoardPart {
     constructor(textureName: string, anchorPoint: PIXI.Point, renderer: PIXI.AbstractRenderer) {
