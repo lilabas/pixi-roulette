@@ -8,6 +8,12 @@ import HitboxBottom6 from "../helpers/hitboxes/HitboxBottom6";
 import HitboxZero from "../helpers/hitboxes/HitboxZero";
 import GameState from "../../../Logic/GameState";
 import Chip from "./Chip";
+import {
+    BET_LOCATION_BIG_TRIPLES,
+    BET_LOCATION_DOUBLES,
+    BET_LOCATION_NUMBERS,
+    BET_LOCATION_ZERO,
+} from "../../../constants/config";
 
 class MainBoard {
     _renderer: PIXI.AbstractRenderer;
@@ -98,7 +104,7 @@ class MainBoard {
                     new PIXI.Point(0.5, 0.5),
                     this._renderer,
                     new PIXI.Point(cols, rows),
-                    `hitbox-${num}`
+                    `${BET_LOCATION_NUMBERS}-${num}`
                 );
                 hitbox.onClicked(this.handleBoardClick);
                 this.addComponent(hitbox);
@@ -114,14 +120,14 @@ class MainBoard {
                 new PIXI.Point(0.5, 0.5),
                 this._renderer,
                 new PIXI.Point(cols, 0),
-                `hitboxBig3-${num}`
+                `${BET_LOCATION_BIG_TRIPLES}-${num}`
             );
             hitboxBig3.onClicked(this.handleBoardClick);
             this.addComponent(hitboxBig3);
             num++;
         }
 
-        //b6 bottom bets
+        // bottom double bets
         num = 1;
         for (let cols = 0; cols < 6; cols++) {
             const hitboxBottom6 = new HitboxBottom6(
@@ -129,7 +135,7 @@ class MainBoard {
                 new PIXI.Point(0.5, 0.5),
                 this._renderer,
                 new PIXI.Point(cols, 0),
-                `HitboxBottom6-${num}`
+                `${BET_LOCATION_DOUBLES}-${num}`
             );
             hitboxBottom6.onClicked(this.handleBoardClick);
             this.addComponent(hitboxBottom6);
@@ -142,7 +148,7 @@ class MainBoard {
             new PIXI.Point(0.5, 0.5),
             this._renderer,
             new PIXI.Point(0, 0),
-            `HitboxZero`
+            `${BET_LOCATION_ZERO}-0`
         );
         hitboxZero.onClicked(this.handleBoardClick);
         this.addComponent(hitboxZero);
