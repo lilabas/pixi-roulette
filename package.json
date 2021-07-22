@@ -21,6 +21,7 @@
     "license": "MIT",
     "dependencies": {
         "core-js": "^3.12.1",
+        "pixi-sound": "^3.0.5",
         "pixi.js": "^6.0.2"
     },
     "devDependencies": {

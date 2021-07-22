@@ -8,6 +8,7 @@ import Wheel from "./containers/Board/components/Wheel";
 import GameMenu from "./containers/UI/components/GameMenu";
 import MainMenu from "./containers/MainMenu/index";
 import GameState from "./Logic/GameState";
+import SoundManager from "./SoundManager";
 
 declare const VERSION: string;
 
@@ -37,7 +38,8 @@ let mainMenu: MainMenu;
 
 window.onload = async (): Promise<void> => {
     await loadGameAssets();
-
+    SoundManager.init();
+    SoundManager.Start();
     document.body.appendChild(app.view);
 
     initComponents();

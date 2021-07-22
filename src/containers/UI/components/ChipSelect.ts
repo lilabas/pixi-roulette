@@ -2,6 +2,7 @@ import * as PIXI from "pixi.js";
 import { CHIP_VALUES } from "../../../constants/config";
 import UIPart from "./UIPart";
 import UIText from "./UIText";
+import SoundManager from "../../../SoundManager";
 
 class ChipSelect extends UIPart {
     _place: number;
@@ -51,6 +52,7 @@ class ChipSelect extends UIPart {
     private handleOnPointerDown(): void {
         //this._sprite.filters = [new PIXI.filters.AlphaFilter(0.0)];
         if (this._selected) return;
+        SoundManager.Chip();
         this._onClick(this._place);
     }
 

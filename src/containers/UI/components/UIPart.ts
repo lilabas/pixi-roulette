@@ -1,4 +1,5 @@
 import * as PIXI from "pixi.js";
+import SoundManager from "../../../SoundManager";
 
 interface IUIClick {
     (index: number): void;

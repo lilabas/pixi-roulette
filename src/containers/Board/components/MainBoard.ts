@@ -8,6 +8,7 @@ import HitboxBottom6 from "../helpers/hitboxes/HitboxBottom6";
 import HitboxZero from "../helpers/hitboxes/HitboxZero";
 import GameState from "../../../Logic/GameState";
 import Chip from "./Chip";
+import SoundManager from "../../../SoundManager";
 import {
     BET_LOCATION_BIG_TRIPLES,
     BET_LOCATION_DOUBLES,
@@ -91,6 +92,7 @@ class MainBoard {
 
     private handleBoardClick = (name: string, sprite: PIXI.Sprite): void => {
         if (!GameState.PlaceBet(name)) return;
+        SoundManager.Click();
         const chip = new Chip(
             `chips/chip${GameState.selectedChip.color}.png`,
             new PIXI.Point(0.5, 0.5),

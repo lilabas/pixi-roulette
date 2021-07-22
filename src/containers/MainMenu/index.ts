@@ -2,11 +2,13 @@ import * as PIXI from "pixi.js";
 import GameButton from "../UI/components/GameButton";
 import GameState from "../../Logic/GameState";
 import { Scene } from "../../constants/config";
+import SoundManager from "../../SoundManager";
 
 class MainMenu {
     _renderer: PIXI.AbstractRenderer;
     _container: PIXI.Container;
     _background: PIXI.Sprite;
+    _soundButton: GameButton;
 
     constructor(renderer: PIXI.AbstractRenderer) {
         this._renderer = renderer;
@@ -14,7 +16,15 @@ class MainMenu {
         this._background = this.initSprite();
 
         this._container.addChild(this._background);
-
+        this._soundButton = new GameButton(
+            "UI/red_button01.png",
+            new PIXI.Point(0.5, 0.5),
+            this._renderer,
+            2,
+            "SOUND ON",
+            false,
+            true
+        );
         this.initButtons();
     }
 
@@ -45,7 +55,7 @@ class MainMenu {
             new PIXI.Point(0.5, 0.5),
             this._renderer,
             0,
-            "PLAY",
+            "CONTINUE",
             false,
             true
         );
@@ -66,22 +76,12 @@ class MainMenu {
         this._container.addChild(historyButton.Sprite);
         this._container.addChild(historyButton.ButtonText);
 
-        const soundButton = new GameButton(
-            "UI/red_button01.png",
-            new PIXI.Point(0.5, 0.5),
-            this._renderer,
-            2,
-            "SOUND OFF",
-            false,
-            true
-        );
-        soundButton.onClicked(this.handleButtonClick);
-        this._container.addChild(soundButton.Sprite);
-        this._container.addChild(soundButton.ButtonText);
+        this._soundButton.onClicked(this.handleButtonClick);
+        this._container.addChild(this._soundButton.Sprite);
+        this._container.addChild(this._soundButton.ButtonText);
     }
 
     private handleButtonClick = (index: number): void => {
-        //todo sound
         switch (index) {
             case -1:
                 GameState.Reset();
@@ -93,7 +93,11 @@ class MainMenu {
             case 1:
                 GameState.scene = Scene.HISTORY;
                 break;
-
+            case 2:
+                GameState.sound = !GameState.sound;
+                SoundManager.Switch();
+                this._soundButton.changeText(!GameState.sound ? "SOUND OFF" : "SOUND ON");
+                break;
             default:
                 break;
         }
