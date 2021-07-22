@@ -1,7 +1,13 @@
 import * as PIXI from "pixi.js";
-class BoardPart {
+
+interface IUIClick {
+    (index: number): void;
+}
+
+class UIPart {
     _renderer: PIXI.AbstractRenderer;
     _sprite: PIXI.Sprite;
+    _onClick: IUIClick = () => null;
 
     constructor(textureName: string, anchorPoint: PIXI.Point, renderer: PIXI.AbstractRenderer) {
         this._renderer = renderer;
@@ -11,6 +17,10 @@ class BoardPart {
     private initSprite(textureName: string, anchorPoint: PIXI.Point): PIXI.Sprite {
         const sprite = PIXI.Sprite.from(textureName);
         sprite.anchor.set(anchorPoint.x, anchorPoint.y);
+
+        sprite.interactive = true;
+        sprite.buttonMode = true;
+
         return sprite;
     }
 
@@ -18,9 +28,13 @@ class BoardPart {
         return this._sprite;
     }
 
-    update(deltaTime: number, anotherPart: BoardPart): void {
-        if (!anotherPart) return;
+    onClicked(callback: IUIClick): void {
+        this._onClick = callback;
+    }
+
+    update(deltaTime: number): void {
+        //
     }
 }
 
-export default BoardPart;
+export default UIPart;

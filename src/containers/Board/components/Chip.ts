@@ -12,8 +12,8 @@ class Chip extends BoardPart {
     ) {
         super(textureName, anchorPoint, renderer);
         this._dropPosition = dropPosition;
-        this._dropPosition.x = dropPosition.x + Math.random() * 10;
-        this._dropPosition.y = dropPosition.y + Math.random() * 10;
+        this._dropPosition.x = dropPosition.x + Math.random() * 5;
+        this._dropPosition.y = dropPosition.y + Math.random() * 5;
         const scaleFactor = this._renderer.screen.width / this._sprite.texture.width;
         this._sprite.scale.set(scaleFactor * 0.025);
         this._sprite.x = this._dropPosition.x;

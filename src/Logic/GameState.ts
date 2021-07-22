@@ -1,16 +1,6 @@
-import { INITIAL_BALANCE } from "../constants/config";
+import { CHIP_VALUES, INITIAL_BALANCE, Scene, SELECTED_CHIP } from "../constants/config";
 import BetResolver from "./BetResolver";
 
-enum ChipValues {
-    yellow = 1,
-    white = 5,
-    red = 10,
-    purple = 20,
-    orange = 50,
-    green = 100,
-    blue = 500,
-    black = 1000,
-}
 declare global {
     interface IChip {
         color: string;
@@ -30,14 +20,16 @@ declare global {
 }
 
 class GameState {
+    static scene: Scene = Scene.MENU;
     static balance = INITIAL_BALANCE;
     static bet = 0;
-    static selectedChip: IChip = { color: "Orange", value: ChipValues.orange };
+    static selectedChip: IChip = CHIP_VALUES[SELECTED_CHIP];
     static lastWinNumber = -1;
     static lastWinAmount = -1;
     static placedBets: Array<IPlacedBet> = [];
     static betHistory: Array<IBetHistory> = [];
     static sound = true;
+    static cleaned = false;
 
     public static PlaceBet(location: string): boolean {
         //needs enough balance
@@ -52,7 +44,9 @@ class GameState {
         //needs bets placed
         if (this.bet === 0) return false;
         this.lastWinNumber = this.GenerateWinningNumber();
+        console.log("🚀 ~ file: GameState.ts ~ line 46 ~ GameState ~ Spin ~ lastWinNumber", this.lastWinNumber);
         this.lastWinAmount = BetResolver.DetermineWinningAmount(this.lastWinNumber, this.placedBets);
+        console.log("🚀 ~ file: GameState.ts ~ line 48 ~ GameState ~ Spin ~ lastWinAmount", this.lastWinAmount);
         this.balance += this.lastWinAmount;
         this.betHistory.push({ bet: this.bet, winAmount: this.lastWinAmount, winNumber: this.lastWinNumber });
 
@@ -66,10 +60,29 @@ class GameState {
         return Math.floor(Math.random() * (max - min) + min);
     }
 
+    static Clear(): void {
+        this.balance += this.bet;
+        this.Cleanup();
+    }
+
     // cleanup variables after spin
-    private static Cleanup(): void {
+    static Cleanup(): void {
         this.bet = 0;
         this.placedBets = [];
+        this.cleaned = true;
+    }
+
+    static Reset(): void {
+        this.scene = Scene.MENU;
+        this.balance = INITIAL_BALANCE;
+        this.bet = 0;
+        this.selectedChip = CHIP_VALUES[SELECTED_CHIP];
+        this.lastWinNumber = -1;
+        this.lastWinAmount = -1;
+        this.placedBets = [];
+        this.betHistory = [];
+        this.sound = true;
+        this.cleaned = true;
     }
 }
 
