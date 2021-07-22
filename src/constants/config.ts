@@ -4,6 +4,12 @@ export const INITIAL_BALANCE = 10000.0;
 export const COMPONETS_SCALE = 0.7;
 export const SELECTED_CHIP = 4;
 
+export const enum Scene {
+    MENU,
+    GAME,
+    HISTORY,
+}
+
 // bet loaction names
 export const BET_LOCATION_NUMBERS = "BET_LOCATION_NUMBERS";
 export const BET_LOCATION_BIG_TRIPLES = "BET_LOCATION_BIG_TRIPLES";

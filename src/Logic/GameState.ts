@@ -1,4 +1,4 @@
-import { CHIP_VALUES, INITIAL_BALANCE, SELECTED_CHIP } from "../constants/config";
+import { CHIP_VALUES, INITIAL_BALANCE, Scene, SELECTED_CHIP } from "../constants/config";
 import BetResolver from "./BetResolver";
 
 declare global {
@@ -20,6 +20,7 @@ declare global {
 }
 
 class GameState {
+    static scene: Scene = Scene.MENU;
     static balance = INITIAL_BALANCE;
     static bet = 0;
     static selectedChip: IChip = CHIP_VALUES[SELECTED_CHIP];
@@ -49,7 +50,7 @@ class GameState {
         this.balance += this.lastWinAmount;
         this.betHistory.push({ bet: this.bet, winAmount: this.lastWinAmount, winNumber: this.lastWinNumber });
 
-        //this.Cleanup();
+        this.Cleanup();
         return true;
     }
 
@@ -59,11 +60,28 @@ class GameState {
         return Math.floor(Math.random() * (max - min) + min);
     }
 
+    static Clear(): void {
+        this.balance += this.bet;
+        this.Cleanup();
+    }
+
     // cleanup variables after spin
     static Cleanup(): void {
-        this.balance += this.bet;
         this.bet = 0;
         this.placedBets = [];
+        this.cleaned = true;
+    }
+
+    static Reset(): void {
+        this.scene = Scene.MENU;
+        this.balance = INITIAL_BALANCE;
+        this.bet = 0;
+        this.selectedChip = CHIP_VALUES[SELECTED_CHIP];
+        this.lastWinNumber = -1;
+        this.lastWinAmount = -1;
+        this.placedBets = [];
+        this.betHistory = [];
+        this.sound = true;
         this.cleaned = true;
     }
 }

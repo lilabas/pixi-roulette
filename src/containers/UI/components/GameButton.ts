@@ -7,6 +7,7 @@ class GameButton extends UIPart {
     _buttonText: UIText = new UIText("", "", 0, 0);
     _scale = 1.5;
     _menu = false;
+    _mainMenu = false;
 
     constructor(
         textureName: string,
@@ -14,12 +15,14 @@ class GameButton extends UIPart {
         renderer: PIXI.AbstractRenderer,
         place: number,
         text: string,
-        menu = false
+        menu = false,
+        mainMenu = false
     ) {
         super(textureName, anchorPoint, renderer);
         this._place = place;
         this._scale = menu ? 2.5 : this._scale;
         this._menu = menu;
+        this._mainMenu = mainMenu;
         this.initButton(text);
     }
 
@@ -27,7 +30,8 @@ class GameButton extends UIPart {
         //const scaleFactor = this._sprite.texture.width / this._renderer.screen.width;
         this._sprite.scale.set(this._scale);
         const menuOffsetX = this._menu ? 0.1 : 0.15;
-        const offsetX = this._renderer.screen.width - this._renderer.screen.width * menuOffsetX;
+        let offsetX = this._renderer.screen.width - this._renderer.screen.width * menuOffsetX;
+        if (this._mainMenu) offsetX = this._renderer.screen.width / 2;
         const offsetY = this._renderer.screen.height - this._renderer.screen.height * (0.3 - this._place * 0.1);
         this._sprite.position.set(offsetX, offsetY);
 

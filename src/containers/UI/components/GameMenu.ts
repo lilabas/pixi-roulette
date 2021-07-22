@@ -2,7 +2,7 @@ import * as PIXI from "pixi.js";
 import UIText from "./UIText";
 import GameState from "../../../Logic/GameState";
 import ChipSelect from "./ChipSelect";
-import { CHIP_VALUES, SELECTED_CHIP } from "../../../constants/config";
+import { CHIP_VALUES, Scene, SELECTED_CHIP } from "../../../constants/config";
 import GameButton from "./GameButton";
 
 class GameMenu {
@@ -92,10 +92,11 @@ class GameMenu {
         // 0 = spin
         if (index === 0 && GameState.Spin()) {
             // todo handle spin action
-        } else if (index == 1) {
-            GameState.Cleanup();
-        } else {
-            //todo open main menu
+        } else if (index === 1) {
+            //1 = clear
+            GameState.Clear();
+        } else if (index < 0) {
+            GameState.scene = Scene.MENU;
         }
     };
 

@@ -1,11 +1,13 @@
 import * as PIXI from "pixi.js";
 import "./style.css";
 import Background from "./containers/Background/index";
-import { GAME_HEIGHT, GAME_WIDTH, COMPONETS_SCALE } from "./constants/config";
+import { GAME_HEIGHT, GAME_WIDTH, COMPONETS_SCALE, Scene } from "./constants/config";
 import MainBoard from "./containers/Board/components/MainBoard";
 import Table from "./containers/Board/components/Table";
 import Wheel from "./containers/Board/components/Wheel";
 import GameMenu from "./containers/UI/components/GameMenu";
+import MainMenu from "./containers/MainMenu/index";
+import GameState from "./Logic/GameState";
 
 declare const VERSION: string;
 
@@ -23,12 +25,15 @@ const app = new PIXI.Application({
 const stage = app.stage;
 const renderer = app.renderer;
 
+let sceneShowing = Scene.MENU;
+
 // game elements
 let background: Background;
 let mainBoard: MainBoard;
 let table: Table;
 let wheel: Wheel;
 let gameMenu: GameMenu;
+let mainMenu: MainMenu;
 
 window.onload = async (): Promise<void> => {
     await loadGameAssets();
@@ -46,33 +51,67 @@ window.onload = async (): Promise<void> => {
 };
 
 function initComponents(): void {
+    mainMenu = new MainMenu(renderer);
+
     background = new Background(renderer);
-    stage.addChild(background.Sprite);
 
     table = new Table("board/board-sm.png", new PIXI.Point(0, 1), renderer);
     wheel = new Wheel("board/wheel-sm.png", new PIXI.Point(0.5, 0.5), renderer);
 
     mainBoard = new MainBoard(renderer, COMPONETS_SCALE, table);
-    mainBoard.addComponent(wheel);
 
     gameMenu = new GameMenu(renderer, COMPONETS_SCALE);
 
+    SwitchScene();
+}
+
+function setMainMenuScene(): void {
+    stage.removeChildren();
+    stage.addChild(mainMenu.Container);
+}
+
+function setGameScene(): void {
+    stage.removeChildren();
+    stage.addChild(background.Sprite);
+    mainBoard.addComponent(wheel);
     stage.addChild(mainBoard.Container);
     stage.addChild(mainBoard.PlacedChipsContainer);
     stage.addChild(gameMenu.Container);
 }
 
+function SwitchScene() {
+    sceneShowing = GameState.scene;
+    switch (GameState.scene) {
+        case Scene.MENU:
+            setMainMenuScene();
+            break;
+        case Scene.GAME:
+            setGameScene();
+            break;
+        default:
+            setMainMenuScene();
+            break;
+    }
+}
+
 // main game loop
 function update(deltaTime: number) {
-    background.update();
-    mainBoard.update(deltaTime);
-    gameMenu.updateGameText();
+    if (sceneShowing != GameState.scene) {
+        SwitchScene();
+    }
+
+    if (GameState.scene === Scene.GAME) {
+        background.update();
+        mainBoard.update(deltaTime);
+        gameMenu.updateGameText();
+    }
 }
 
 async function loadGameAssets(): Promise<void> {
     return new Promise((res, rej) => {
         const loader = PIXI.Loader.shared;
         loader.add("background", "./assets/background/background.jpg");
+        loader.add("mainmenu", "./assets/background/mainmenu.jpg");
         loader.add("components", "./assets/components.json");
 
         loader.onComplete.once(() => {
