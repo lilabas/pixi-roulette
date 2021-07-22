@@ -3,6 +3,7 @@ import UIText from "./UIText";
 import GameState from "../../../Logic/GameState";
 import ChipSelect from "./ChipSelect";
 import { CHIP_VALUES, SELECTED_CHIP } from "../../../constants/config";
+import GameButton from "./GameButton";
 
 class GameMenu {
     _renderer: PIXI.AbstractRenderer;
@@ -20,6 +21,39 @@ class GameMenu {
 
         this.initGameText();
         this.initChipSelect();
+        this.initButtons();
+    }
+
+    private initButtons(): void {
+        const spinButton = new GameButton("UI/red_button01.png", new PIXI.Point(0.5, 0.5), this._renderer, 0, "SPIN");
+        spinButton.onClicked(this.handleButtonClick);
+        this._container.addChild(spinButton.Sprite);
+        this._container.addChild(spinButton.ButtonText);
+
+        const clearButton = new GameButton(
+            "UI/grey_button00.png",
+            new PIXI.Point(0.5, 0.5),
+            this._renderer,
+            1,
+            "CLEAR"
+        );
+
+        clearButton.onClicked(this.handleButtonClick);
+        this._container.addChild(clearButton.Sprite);
+        this._container.addChild(clearButton.ButtonText);
+
+        const mainMenuButton = new GameButton(
+            "UI/grey_sliderRight.png",
+            new PIXI.Point(0.5, 0.5),
+            this._renderer,
+            -6.5,
+            "MENU",
+            true
+        );
+
+        mainMenuButton.onClicked(this.handleButtonClick);
+        this._container.addChild(mainMenuButton.Sprite);
+        this._container.addChild(mainMenuButton.ButtonText);
     }
 
     private initGameText(): void {
@@ -28,13 +62,6 @@ class GameMenu {
         this._betText.Text.position.set(0, 50);
         this._container.addChild(this._betText.Text);
     }
-
-    private handleChipSelected = (chipIndex: number): void => {
-        this._chips.forEach((chip, index) => {
-            chip.setSelected(index === chipIndex);
-        });
-        GameState.selectedChip = CHIP_VALUES[chipIndex];
-    };
 
     private initChipSelect(): void {
         CHIP_VALUES.forEach((chipValue, index) => {
@@ -53,6 +80,24 @@ class GameMenu {
             this._container.addChild(newChip.ChipText);
         });
     }
+
+    private handleChipSelected = (chipIndex: number): void => {
+        this._chips.forEach((chip, index) => {
+            chip.setSelected(index === chipIndex);
+        });
+        GameState.selectedChip = CHIP_VALUES[chipIndex];
+    };
+
+    private handleButtonClick = (index: number): void => {
+        // 0 = spin
+        if (index === 0 && GameState.Spin()) {
+            // todo handle spin action
+        } else if (index == 1) {
+            GameState.Cleanup();
+        } else {
+            //todo open main menu
+        }
+    };
 
     get Container(): PIXI.Container {
         return this._container;

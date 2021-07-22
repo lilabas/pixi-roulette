@@ -57,6 +57,8 @@ class MainBoard {
         });
 
         this._boardInteract.update(deltaTime);
+
+        this.checkGameState();
     }
 
     addComponent(component: BoardPart): void {
@@ -74,6 +76,13 @@ class MainBoard {
 
     get PlacedChipsContainer(): PIXI.Container {
         return this._placedChipsCointainer;
+    }
+
+    private checkGameState(): void {
+        if (GameState.cleaned) {
+            this.clearBoard();
+            GameState.cleaned = false;
+        }
     }
 
     private clearBoard = (): void => {

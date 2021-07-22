@@ -5,7 +5,7 @@ import UIText from "./UIText";
 
 class ChipSelect extends UIPart {
     _place: number;
-    _chipText: UIText;
+    _chipText: UIText = new UIText("", "", 0, 0);
     _scale = 0.5;
     _selected = false;
     _originalYPos = 80;
@@ -13,13 +13,12 @@ class ChipSelect extends UIPart {
     constructor(textureName: string, anchorPoint: PIXI.Point, renderer: PIXI.AbstractRenderer, place: number) {
         super(textureName, anchorPoint, renderer);
         this._place = place;
-        this._chipText = new UIText("", "", 0, 0);
         this.initChip();
     }
 
     private initChip(): void {
         this._sprite.scale.set(this._scale);
-        const offsetX = this._renderer.screen.width - this._renderer.screen.width * (0.3 - this._place * 0.03);
+        const offsetX = this._renderer.screen.width - this._renderer.screen.width * (0.6 - this._place * 0.03);
         this._sprite.position.set(offsetX, this._originalYPos);
 
         this._sprite.on("pointerover", this.handleOnPointerOver, this);

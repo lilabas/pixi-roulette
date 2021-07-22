@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 
 interface IUIClick {
-    (chipIndex: number): void;
+    (index: number): void;
 }
 
 class UIPart {

@@ -28,6 +28,7 @@ class GameState {
     static placedBets: Array<IPlacedBet> = [];
     static betHistory: Array<IBetHistory> = [];
     static sound = true;
+    static cleaned = false;
 
     public static PlaceBet(location: string): boolean {
         //needs enough balance
@@ -42,11 +43,13 @@ class GameState {
         //needs bets placed
         if (this.bet === 0) return false;
         this.lastWinNumber = this.GenerateWinningNumber();
+        console.log("🚀 ~ file: GameState.ts ~ line 46 ~ GameState ~ Spin ~ lastWinNumber", this.lastWinNumber);
         this.lastWinAmount = BetResolver.DetermineWinningAmount(this.lastWinNumber, this.placedBets);
+        console.log("🚀 ~ file: GameState.ts ~ line 48 ~ GameState ~ Spin ~ lastWinAmount", this.lastWinAmount);
         this.balance += this.lastWinAmount;
         this.betHistory.push({ bet: this.bet, winAmount: this.lastWinAmount, winNumber: this.lastWinNumber });
 
-        this.Cleanup();
+        //this.Cleanup();
         return true;
     }
 
@@ -57,9 +60,11 @@ class GameState {
     }
 
     // cleanup variables after spin
-    private static Cleanup(): void {
+    static Cleanup(): void {
+        this.balance += this.bet;
         this.bet = 0;
         this.placedBets = [];
+        this.cleaned = true;
     }
 }
 
