@@ -36,9 +36,6 @@ class MainBoard {
         this._container.addChild(this._boardInteract.Container);
 
         this.buildHitboxes();
-        // setTimeout(() => {
-        //     this.clearBoard();
-        // }, 10000);
     }
 
     update(deltaTime: number): void {
@@ -84,6 +81,7 @@ class MainBoard {
     };
 
     private handleBoardClick = (name: string, sprite: PIXI.Sprite): void => {
+        if (!GameState.PlaceBet(name)) return;
         const chip = new Chip(
             `chips/chip${GameState.selectedChip.color}.png`,
             new PIXI.Point(0.5, 0.5),

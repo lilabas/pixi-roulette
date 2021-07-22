@@ -1,19 +1,18 @@
 import * as PIXI from "pixi.js";
 import "./style.css";
 import Background from "./containers/Background/index";
-import { GAME_HEIGHT, GAME_WIDTH } from "./constants/config";
+import { GAME_HEIGHT, GAME_WIDTH, COMPONETS_SCALE } from "./constants/config";
 import MainBoard from "./containers/Board/components/MainBoard";
 import Table from "./containers/Board/components/Table";
 import Wheel from "./containers/Board/components/Wheel";
+import GameMenu from "./containers/UI/components/GameMenu";
 
 declare const VERSION: string;
 
 console.log(`Welcome from pixi-typescript-boilerplate ${VERSION}`);
 
-const COMPONETS_SCALE = 0.7;
-
 const app = new PIXI.Application({
-    backgroundColor: 0xd3d3d3,
+    backgroundColor: 0x000000,
     width: GAME_WIDTH,
     height: GAME_HEIGHT,
     autoDensity: true,
@@ -29,6 +28,7 @@ let background: Background;
 let mainBoard: MainBoard;
 let table: Table;
 let wheel: Wheel;
+let gameMenu: GameMenu;
 
 window.onload = async (): Promise<void> => {
     await loadGameAssets();
@@ -53,17 +53,20 @@ function initComponents(): void {
     wheel = new Wheel("board/wheel-sm.png", new PIXI.Point(0.5, 0.5), renderer);
 
     mainBoard = new MainBoard(renderer, COMPONETS_SCALE, table);
-
     mainBoard.addComponent(wheel);
+
+    gameMenu = new GameMenu(renderer, COMPONETS_SCALE);
 
     stage.addChild(mainBoard.Container);
     stage.addChild(mainBoard.PlacedChipsContainer);
+    stage.addChild(gameMenu.Container);
 }
 
 // main game loop
 function update(deltaTime: number) {
     background.update();
     mainBoard.update(deltaTime);
+    gameMenu.updateGameText();
 }
 
 async function loadGameAssets(): Promise<void> {

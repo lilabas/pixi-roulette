@@ -1,16 +1,6 @@
-import { INITIAL_BALANCE } from "../constants/config";
+import { CHIP_VALUES, INITIAL_BALANCE, SELECTED_CHIP } from "../constants/config";
 import BetResolver from "./BetResolver";
 
-enum ChipValues {
-    yellow = 1,
-    white = 5,
-    red = 10,
-    purple = 20,
-    orange = 50,
-    green = 100,
-    blue = 500,
-    black = 1000,
-}
 declare global {
     interface IChip {
         color: string;
@@ -32,7 +22,7 @@ declare global {
 class GameState {
     static balance = INITIAL_BALANCE;
     static bet = 0;
-    static selectedChip: IChip = { color: "Orange", value: ChipValues.orange };
+    static selectedChip: IChip = CHIP_VALUES[SELECTED_CHIP];
     static lastWinNumber = -1;
     static lastWinAmount = -1;
     static placedBets: Array<IPlacedBet> = [];

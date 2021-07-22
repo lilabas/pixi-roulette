@@ -2,13 +2,13 @@ import * as PIXI from "pixi.js";
 import Table from "../../components/Table";
 import BoardPart from "../../components/BoardPart";
 
-interface IClick {
+interface IBoardClick {
     (name: string, sprite: PIXI.Sprite): void;
 }
 class Hitbox extends BoardPart {
     _offset: PIXI.Point;
     _name: string;
-    _onClick: IClick;
+    _onClick: IBoardClick;
 
     constructor(
         textureName: string,
@@ -44,7 +44,7 @@ class Hitbox extends BoardPart {
         this._sprite.y = tableRect.y + tableRect.height * 0.43 - offsetY;
     }
 
-    onClicked(callback: IClick): void {
+    onClicked(callback: IBoardClick): void {
         this._onClick = callback;
     }
 
