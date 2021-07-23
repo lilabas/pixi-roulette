@@ -1,4 +1,4 @@
-import { CHIP_VALUES, INITIAL_BALANCE, Scene, SELECTED_CHIP } from "../constants/config";
+import { CHIP_VALUES, INITIAL_BALANCE, Scene, SELECTED_CHIP, SPIN_TIME } from "../constants/config";
 import BetResolver from "./BetResolver";
 
 declare global {
@@ -30,10 +30,11 @@ class GameState {
     static betHistory: Array<IBetHistory> = [];
     static sound = true;
     static cleaned = false;
+    static spinning = false;
 
     public static PlaceBet(location: string): boolean {
-        //needs enough balance
-        if (this.balance < this.selectedChip.value) return false;
+        //needs enough balance, must not be spinning
+        if (this.balance < this.selectedChip.value || this.spinning) return false;
         this.balance -= this.selectedChip.value;
         this.bet += this.selectedChip.value;
         this.placedBets.push({ chip: this.selectedChip, location });
@@ -41,17 +42,22 @@ class GameState {
     }
 
     public static Spin(): boolean {
-        //needs bets placed
-        if (this.bet === 0) return false;
+        //needs bets placed, must not be spinning
+        if (this.bet === 0 || this.spinning) return false;
+        this.spinning = true;
         this.lastWinNumber = this.GenerateWinningNumber();
-        console.log("🚀 ~ file: GameState.ts ~ line 46 ~ GameState ~ Spin ~ lastWinNumber", this.lastWinNumber);
         this.lastWinAmount = BetResolver.DetermineWinningAmount(this.lastWinNumber, this.placedBets);
-        console.log("🚀 ~ file: GameState.ts ~ line 48 ~ GameState ~ Spin ~ lastWinAmount", this.lastWinAmount);
+        setTimeout(() => {
+            this.updateSpinResults();
+        }, SPIN_TIME);
+        return true;
+    }
+
+    private static updateSpinResults(): void {
+        this.spinning = false;
         this.balance += this.lastWinAmount;
         this.betHistory.unshift({ bet: this.bet, winAmount: this.lastWinAmount, winNumber: this.lastWinNumber });
-
         this.Cleanup();
-        return true;
     }
 
     private static GenerateWinningNumber(): number {

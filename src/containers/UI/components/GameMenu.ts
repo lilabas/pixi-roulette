@@ -4,6 +4,7 @@ import GameState from "../../../Logic/GameState";
 import ChipSelect from "./ChipSelect";
 import { CHIP_VALUES, Scene, SELECTED_CHIP } from "../../../constants/config";
 import GameButton from "./GameButton";
+import SoundManager from "../../../SoundManager";
 
 class GameMenu {
     _renderer: PIXI.AbstractRenderer;
@@ -91,7 +92,7 @@ class GameMenu {
     private handleButtonClick = (index: number): void => {
         // 0 = spin
         if (index === 0 && GameState.Spin()) {
-            // todo handle spin action
+            SoundManager.Spin();
         } else if (index === 1) {
             //1 = clear
             GameState.Clear();
