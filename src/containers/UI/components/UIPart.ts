@@ -32,7 +32,7 @@ class UIPart {
         this._onClick = callback;
     }
 
-    update(deltaTime: number): void {
+    update(): void {
         //
     }
 }

@@ -8,6 +8,7 @@ import Wheel from "./containers/Board/components/Wheel";
 import GameMenu from "./containers/UI/components/GameMenu";
 import MainMenu from "./containers/MainMenu/index";
 import GameState from "./Logic/GameState";
+import SoundManager from "./SoundManager";
 
 declare const VERSION: string;
 
@@ -38,6 +39,7 @@ let mainMenu: MainMenu;
 window.onload = async (): Promise<void> => {
     await loadGameAssets();
 
+    SoundManager.Start();
     document.body.appendChild(app.view);
 
     initComponents();
@@ -110,6 +112,7 @@ function update(deltaTime: number) {
 async function loadGameAssets(): Promise<void> {
     return new Promise((res, rej) => {
         const loader = PIXI.Loader.shared;
+        SoundManager.init();
         loader.add("background", "./assets/background/background.jpg");
         loader.add("mainmenu", "./assets/background/mainmenu.jpg");
         loader.add("components", "./assets/components.json");

@@ -15,13 +15,6 @@ class BoardInteract {
         this._scale = scale;
         this._table = table;
         this._hitboxes = [];
-        this.buildHitboxes();
-    }
-
-    private buildHitboxes(): void {
-        // this._container.addChild(hitbox.Graphics);
-        // this._hitboxes.push(hitbox);
-        // build hitboxes for black and red numbers
     }
 
     get Container(): PIXI.Container {

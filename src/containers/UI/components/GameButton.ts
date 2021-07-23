@@ -1,6 +1,7 @@
 import * as PIXI from "pixi.js";
 import UIPart from "./UIPart";
 import UIText from "./UIText";
+import SoundManager from "../../../SoundManager";
 
 class GameButton extends UIPart {
     _place: number;
@@ -50,7 +51,12 @@ class GameButton extends UIPart {
         return this._buttonText.Text;
     }
 
+    changeText(text: string): void {
+        this._buttonText.Text.text = text;
+    }
+
     private handleOnPointerDown(): void {
+        SoundManager.Click();
         this._onClick(this._place);
     }
 
