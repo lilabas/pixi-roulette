@@ -9,6 +9,7 @@ import GameMenu from "./containers/UI/components/GameMenu";
 import MainMenu from "./containers/MainMenu/index";
 import GameState from "./Logic/GameState";
 import SoundManager from "./SoundManager";
+import History from "./containers/History/index";
 
 declare const VERSION: string;
 
@@ -35,6 +36,7 @@ let table: Table;
 let wheel: Wheel;
 let gameMenu: GameMenu;
 let mainMenu: MainMenu;
+let history: History;
 
 window.onload = async (): Promise<void> => {
     await loadGameAssets();
@@ -56,6 +58,8 @@ function initComponents(): void {
     mainMenu = new MainMenu(renderer);
 
     background = new Background(renderer);
+
+    history = new History(renderer);
 
     table = new Table("board/board-sm.png", new PIXI.Point(0, 1), renderer);
     wheel = new Wheel("board/wheel-sm.png", new PIXI.Point(0.5, 0.5), renderer);
@@ -81,6 +85,12 @@ function setGameScene(): void {
     stage.addChild(gameMenu.Container);
 }
 
+function setHistoryScene(): void {
+    stage.removeChildren();
+    history.renderBetHistory();
+    stage.addChild(history.Container);
+}
+
 function SwitchScene() {
     sceneShowing = GameState.scene;
     switch (GameState.scene) {
@@ -89,6 +99,9 @@ function SwitchScene() {
             break;
         case Scene.GAME:
             setGameScene();
+            break;
+        case Scene.HISTORY:
+            setHistoryScene();
             break;
         default:
             setMainMenuScene();
