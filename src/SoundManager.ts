@@ -1,5 +1,5 @@
 import * as pixiSound from "pixi-sound";
-import GameState from "./Logic/GameState";
+import { SPIN_TIME } from "./constants/config";
 
 class SoundManager {
     static ambientPlaying = false;
@@ -31,18 +31,22 @@ class SoundManager {
     }
 
     static Click(): void {
-        if (!GameState.sound) return;
         pixiSound.default.play("click");
     }
 
     static Chip(): void {
-        if (!GameState.sound) return;
         pixiSound.default.play("chip");
     }
 
     static Win(): void {
-        if (!GameState.sound) return;
         pixiSound.default.play("win");
+    }
+
+    static Spin(): void {
+        pixiSound.default.play("spin");
+        setTimeout(() => {
+            pixiSound.default.stop("spin");
+        }, SPIN_TIME);
     }
 }
 

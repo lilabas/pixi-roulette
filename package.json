@@ -21,8 +21,12 @@
     "license": "MIT",
     "dependencies": {
         "core-js": "^3.12.1",
+        "pixi-ease": "^3.0.7",
         "pixi-sound": "^3.0.5",
-        "pixi.js": "^6.0.2"
+        "pixi-tween": "^0.2.0",
+        "pixi-tweener": "^0.11.0",
+        "pixi.js": "^6.0.2",
+        "ts-easing": "^0.2.0"
     },
     "devDependencies": {
         "@babel/core": "^7.13.16",

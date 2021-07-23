@@ -18,8 +18,8 @@ class BoardPart {
         return this._sprite;
     }
 
-    update(deltaTime: number, anotherPart: BoardPart): void {
-        if (!anotherPart) return;
+    update(deltaTime: number, anotherPart: BoardPart, elapsedMS: number): void {
+        if (!anotherPart || !elapsedMS || !deltaTime) return;
     }
 }
 

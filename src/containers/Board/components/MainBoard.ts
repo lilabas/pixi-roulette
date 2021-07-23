@@ -9,6 +9,9 @@ import HitboxZero from "../helpers/hitboxes/HitboxZero";
 import GameState from "../../../Logic/GameState";
 import Chip from "./Chip";
 import SoundManager from "../../../SoundManager";
+import Ball from "./Ball";
+import Wheel from "./Wheel";
+import WinPopup from "../../../Animations/WinPopup";
 import {
     BET_LOCATION_BIG_TRIPLES,
     BET_LOCATION_DOUBLES,
@@ -24,6 +27,9 @@ class MainBoard {
     _table: Table;
     _boardInteract: BoardInteract;
     _placedChipsCointainer: PIXI.Container;
+    _ball: Ball;
+    _wheel: Wheel;
+    _winPopoup: WinPopup;
 
     constructor(renderer: PIXI.AbstractRenderer, scale: number, table: Table) {
         this._renderer = renderer;
@@ -35,11 +41,17 @@ class MainBoard {
         this._container.addChild(this._table.Sprite);
         this._boardInteract = new BoardInteract(renderer, scale, table);
         this._container.addChild(this._boardInteract.Container);
+        this._wheel = new Wheel("board/wheel-sm.png", new PIXI.Point(0.5, 0.5), renderer);
+        this._container.addChild(this._wheel.Sprite);
+        this._ball = new Ball("board/ball.png", new PIXI.Point(0.5, 0.5), renderer);
+        this._container.addChild(this._ball.Sprite);
+        this._winPopoup = new WinPopup("win.png", new PIXI.Point(0.5, 0.5), renderer);
+        this._container.addChild(this._winPopoup.Container);
 
         this.buildHitboxes();
     }
 
-    update(deltaTime: number): void {
+    update(deltaTime: number, elapsedMS: number): void {
         this._container.pivot.x = 0;
         this._container.pivot.y = this._renderer.screen.height - this._container.height / this._scale;
         this._container.y = this._renderer.screen.height - this._container.height;
@@ -54,9 +66,13 @@ class MainBoard {
         this._table.update();
 
         this._children.forEach((child) => {
-            child.update(deltaTime, this._table);
+            child.update(deltaTime, this._table, elapsedMS);
         });
 
+        this._wheel.update(deltaTime, this._table, elapsedMS);
+        this._ball.update(deltaTime, this._wheel, elapsedMS);
+
+        this._winPopoup.check();
         this._boardInteract.update(deltaTime);
 
         this.checkGameState();
