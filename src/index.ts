@@ -38,7 +38,7 @@ let mainMenu: MainMenu;
 
 window.onload = async (): Promise<void> => {
     await loadGameAssets();
-    SoundManager.init();
+
     SoundManager.Start();
     document.body.appendChild(app.view);
 
@@ -112,6 +112,7 @@ function update(deltaTime: number) {
 async function loadGameAssets(): Promise<void> {
     return new Promise((res, rej) => {
         const loader = PIXI.Loader.shared;
+        SoundManager.init();
         loader.add("background", "./assets/background/background.jpg");
         loader.add("mainmenu", "./assets/background/mainmenu.jpg");
         loader.add("components", "./assets/components.json");

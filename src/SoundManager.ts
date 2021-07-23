@@ -10,10 +10,10 @@ class SoundManager {
         pixiSound.default.add("win", "../assets/sounds/win.wav");
         pixiSound.default.add("ambient", "../assets/sounds/ambient.mp3");
         pixiSound.default.volume("ambient", 0.1);
-        this.Ambient();
     }
 
     static Start(): void {
+        this.Ambient();
         this.Switch();
     }
 

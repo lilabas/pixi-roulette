@@ -1,5 +1,4 @@
 import * as PIXI from "pixi.js";
-import SoundManager from "../../../SoundManager";
 
 interface IUIClick {
     (index: number): void;
@@ -33,7 +32,7 @@ class UIPart {
         this._onClick = callback;
     }
 
-    update(deltaTime: number): void {
+    update(): void {
         //
     }
 }
