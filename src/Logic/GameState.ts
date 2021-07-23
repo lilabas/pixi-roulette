@@ -48,7 +48,7 @@ class GameState {
         this.lastWinAmount = BetResolver.DetermineWinningAmount(this.lastWinNumber, this.placedBets);
         console.log("🚀 ~ file: GameState.ts ~ line 48 ~ GameState ~ Spin ~ lastWinAmount", this.lastWinAmount);
         this.balance += this.lastWinAmount;
-        this.betHistory.push({ bet: this.bet, winAmount: this.lastWinAmount, winNumber: this.lastWinNumber });
+        this.betHistory.unshift({ bet: this.bet, winAmount: this.lastWinAmount, winNumber: this.lastWinNumber });
 
         this.Cleanup();
         return true;
