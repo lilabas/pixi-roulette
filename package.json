@@ -24,7 +24,7 @@
         "pixi-ease": "^3.0.7",
         "pixi-sound": "^3.0.5",
         "pixi-tween": "^0.2.0",
-        "pixi-tweener": "^0.11.0",
+        "pixi-tweener": "^0.12.2",
         "pixi.js": "^6.0.2",
         "ts-easing": "^0.2.0"
     },
